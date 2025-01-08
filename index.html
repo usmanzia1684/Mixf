@@ -25,6 +25,7 @@
     </div>
     <script>
       var canvas = document.querySelector("#unity-canvas");
+	  var unityInstance = null; // Declare unityInstance globally
 
       // Shows a temporary message banner/ribbon for a few seconds, or
       // a permanent error message on top of the canvas if type=='error'.
@@ -94,8 +95,6 @@
         // To lower canvas resolution on mobile devices to gain some
         // performance, uncomment the following line:
         // config.devicePixelRatio = 1;
-
-
       } else {
         // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
         canvas.style.width = "960px";
@@ -109,19 +108,26 @@
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                document.querySelector("#unity-loading-bar").style.display = "none";
-                document.querySelector("#unity-fullscreen-button").onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };
+        }).then((instance) => {
+          unityInstance = instance;  // Store the Unity instance
+          document.querySelector("#unity-loading-bar").style.display = "none";
+          document.querySelector("#unity-fullscreen-button").onclick = () => {
+            unityInstance.SetFullscreen(1);
+          };
 
-              }).catch((message) => {
-                alert(message);
-              });
-            };
+          // Now that Unity is loaded, you can interact with it
+          // Example: Send a message to Unity (replace with your own logic)
+          // unityInstance.SendMessage("Mic", "ReceiveMicrophoneNameFromJS", "Browser Fetch...");
+
+          // Example: Fetch the microphone name
+         
+
+        }).catch((message) => {
+          alert(message);
+        });
+      };
 
       document.body.appendChild(script);
-
     </script>
   </body>
 </html>
